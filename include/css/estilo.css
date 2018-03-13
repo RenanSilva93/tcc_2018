@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:800');
+
+/* Estilos genericos */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*body {
+    margin: 0 0 60px; 
+}*/
+
+.footer {
+    bottom: 0px;
+    width: 100%;
+    background-color: #ADD8E6;
+    /*position: fixed;*/
+    padding: 10px 0 10px 0;
+}
+
+.nav-container {
+    width: 100%;
+    background-color: #646464;
+    margin: 0 0 30px 0;
+}
+
+.nav-pills > li > a {
+    border-radius: 0!important;
+    color: #fff;
+    padding-right: 40px;
+}
+
+.form-inline {
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+.ranking {
+    width: 30%;
+    height: 0; /* A mágica está aqui */
+    padding-bottom: 48%; /* ... e está aqui */
+    margin: 1%;
+    border: 5px solid;
+    border-radius: 14px;
+}
+
+.nome_ranking_par {
+    background-color: #4169E1;
+    padding: 0.45%;
+}
+
+.nome_ranking_impar {
+    background-color: blue;
+    padding: 0.45%;
+}
+
+.ponto_ranking {
+    text-align: right;
+    color: white;
+}
+
+#aviso {
+    font-size: 18px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}

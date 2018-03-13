@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = 'http://localhost/tcc_2018/';
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,7 @@ $config['base_url'] = '';
 |
 */
 $config['index_page'] = 'index.php';
+//$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +77,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
