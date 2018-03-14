@@ -41,7 +41,7 @@ $this->load->view('templates/header');
     </div>
 </div>
 </center>
-<br>
+<br><br>
 
 <?php echo form_close(); ?>
 
