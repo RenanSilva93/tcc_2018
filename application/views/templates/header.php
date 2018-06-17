@@ -16,33 +16,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   
         <title>GAMEQUIZ</title>
 
-        <?php
-        $curr_user = false;
-        /*if ($this->session->userdata('loginuser')) {
-            $curr_user = new TCCUsuario($this->session->userdata('username'));
-        } else {
-            $curr_user = new TCCUsuario(VISITANTE);
-        }*/
-        ?>
     </head>
     <body>
         <header>
-            <div class="header-banner img-responsive" style="width: 100%; height: 30%; background: url(<?php echo base_url('include/imagem/foto3.jpg'); ?>);"></div>
+            <div class="header-banner img-responsive" style="width: 100%; height: 30%; background: url(<?php echo base_url('include/imagem/capa.png'); ?>);">
+                <div class="row">
+                    
+                    <div class="col-md-12 text-center">
+                        <h1 style="font-style: oblique; padding-top: 4%;text-align: center;font-family: Sunday; font-size: 100px;">GAME QUIZ</h1>
+                    </div>
+                    
+                </div>
+            </div>
     <?php if ($this->session->userdata('loginuser')) { ?>
         <div class="nav-container">
             <div class="container">
                 <div class="row">
                     <ul class="nav nav-pills">
                         <li class="text-left">
-                            <a href="<?php echo base_url(); ?>">Página Principal</a>
-                        </li>
-                        <li class="text-left">
-                            <a href="<?php echo base_url(); ?>">Jogar Quiz</a>                                    
+                            <a href="<?php echo base_url(). 'index.php/atividade/index'; ?>">Página Principal</a>
                         </li>
                         
                         <?php if ($this->session->userdata('tipo_usuario') == '1') { ?>
+                        
                         <li class="text-left">
-                            <a href="<?php echo base_url(); ?>">Função Usuário</a>
+                            <a href="<?php echo base_url(). 'index.php/atividade/cadastrarPergunta'; ?>">Cadastro de Pergunta</a>
                         </li>
                         <?php } ?>
                         
@@ -56,5 +54,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
     <?php } ?>
-        </header> <br>
+        </header>
 

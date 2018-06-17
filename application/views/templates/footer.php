@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-10">
                 <ul>
-                    <p>Sistema desenvolvido para pelo discente da Universidade Federal de Juiz de Fora, 
+                    <p>Sistema desenvolvido pelo discente da Universidade Federal de Juiz de Fora, 
                         Renan Costa da Silva, para a disciplina de conclusão de curso.</p>
                     <p>Contato: renan.costas@hotmail.com</p>
                 </ul>               

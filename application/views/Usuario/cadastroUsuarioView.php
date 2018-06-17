@@ -66,8 +66,12 @@ echo form_open('usuario/inserir/');
     </div>
     
     <div class="form-inline">
-        <label class="col-sm-4" for="ano_escolar">Ano Escolar:</label>
-        <input class="form-control col-sm-5" placeholder="Ano Escolar" id="ano_escolar" name="ano_escolar" type="number"/>
+        <label class="col-sm-4" for="ano_escolar">Ano Escolar:*</label>
+            <select class="form-control col-sm-5" name="ano_escolar" id="ano_escolar">
+                <option value="" selected>Selecione...</option>
+                    <option value="B">3ºB</option>
+                    <option value="C">3ºC</option>
+            </select> 
     </div>
     
     <div class="form-inline">

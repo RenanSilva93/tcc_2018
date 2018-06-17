@@ -44,14 +44,38 @@ html {
     border-radius: 14px;
 }
 
-.nome_ranking_par {
+.imagem_ranking {
+    border-left: 5px solid;
+    border-right: 5px solid;
+    border-top: 5px solid;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.nome_ranking_par_ultimo {
+    width: 30%;
+    height: 10%;
     background-color: #4169E1;
-    padding: 0.45%;
+    border-left: 5px solid;
+    border-right: 5px solid;
+    border-bottom: 5px solid;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+.nome_ranking_par {
+    width: 30%;
+    height: 10%;
+    background-color: #4169E1;
+    border-left: 5px solid;
+    border-right: 5px solid;
 }
 
 .nome_ranking_impar {
+    width: 30%;
+    height: 10%;
     background-color: blue;
-    padding: 0.45%;
+    border-left: 5px solid;
+    border-right: 5px solid;
 }
 
 .ponto_ranking {

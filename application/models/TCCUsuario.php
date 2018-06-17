@@ -17,7 +17,7 @@ class TCCUsuario extends CI_Model {
     public function construct ($username = null, $id = null) {
         parent::__construct('usuario');
         $this->load->database();
-		
+
         $resultado = NULL;
         if($username) {
             $query = $this->db->get_where(TABELA_USUARIO, array('username' => $username));
