@@ -11,6 +11,7 @@ class Atividade extends CI_Controller {
     }
     
     public function index($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
         $data['gamificacao1'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 1);
         $data['gamificacao2'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 2);
         $data['gamificacao3'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 3);
@@ -41,12 +42,19 @@ class Atividade extends CI_Controller {
         $data['mensagem'] = $mensagem;
         
         $this->load->view('atividade/principal', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
     }
     
     public function cadastrarPergunta($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
             $data['mensagem'] = $mensagem;
         
         $this->load->view('atividade/cadastrarPerguntaView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
     }
     
     public function inserirPergunta() {
@@ -82,6 +90,8 @@ class Atividade extends CI_Controller {
     }
     
     public function jogarFase($nivel, $denovo = NULL) {
+        if ($this->session->userdata('loginuser')) {
+    
         $data['denovo'] = $denovo;
         if($nivel == 1) {
             $data['perguntas'] = $this->modelAtividade->getPerguntas($nivel);
@@ -102,9 +112,13 @@ class Atividade extends CI_Controller {
             $this->load->view('atividade/quizView', $data);
             
         }
+        } else {
+            $this->load->view('welcome_message');
+        }
     }
     
     public function responderQuiz() {
+        if ($this->session->userdata('loginuser')) {
         $post = $this->input->post();
         $this->load->library('form_validation');
         $peso = 1;
@@ -177,10 +191,14 @@ class Atividade extends CI_Controller {
             }
             
         }
+        } else {
+            $this->load->view('welcome_message');
+        }
          
     }
     
     public function verResposta($nivel, $idUsuario) {
+        if ($this->session->userdata('loginuser')) {
         $gamificacao = $this->modelAtividade->getGamificacaoIdUsuario($idUsuario, $nivel);
         $soma = 0;
         foreach ($gamificacao as $game) {
@@ -199,7 +217,11 @@ class Atividade extends CI_Controller {
         
         $data['nivel'] = $nivel;
         $this->load->view('atividade/quizResposta', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
     }
+    
     
     public function getNome($turma) {
         $data['nomes'] = $this->modelAtividade->getNome($turma);
@@ -208,6 +230,7 @@ class Atividade extends CI_Controller {
     }
     
     public function questionario($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
         $data['mensagem'] = $mensagem;
         
         if($this->modelAtividade->verificaQuestionario($this->session->userdata('id'))) {
@@ -217,9 +240,13 @@ class Atividade extends CI_Controller {
         
             $this->load->view('atividade/questionarioView', $data);
         }
+        } else {
+            $this->load->view('welcome_message');
+        }
     }
     
     public function responderQuestionario() {
+        if ($this->session->userdata('loginuser')) {
         $post = $this->input->post();
         $this->load->library('form_validation');
         
@@ -249,6 +276,9 @@ class Atividade extends CI_Controller {
             $mensagem = 'Obrigado por responder a pesquisa. Acaba de ganhar mais 10 pontos pela '
                     . 'participação.';
             $this->index($mensagem);
+        }
+        } else {
+            $this->load->view('welcome_message');
         }
     }
 }
