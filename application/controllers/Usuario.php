@@ -29,7 +29,7 @@ class Usuario extends CI_Controller {
             $this->cadastrar();
         } else {
             $data['nome'] = $post['nome'];
-            $data['senha'] = $post['senha'];
+            //$data['senha'] = $post['senha'];
             $data['username'] = $post['username'];
             $data['email'] = $post['email'];
             $data['data_nascimento'] = $post['data_nascimento'];
@@ -50,22 +50,22 @@ class Usuario extends CI_Controller {
                 }
             } else { //insercao                   
                 if ($post['senha'] == $post['senha2']) {
-                    //$data['senha'] = password_hash($post['password'], PASSWORD_DEFAULT);
+                    $data['senha'] = password_hash($post['senha'], PASSWORD_DEFAULT);
                     if($this->modelUsuario->verificarUsername($post['username'])) {
                         if ($this->modelUsuario->cadastrar($data)) {
-                            $this->data['mensagem'] = 'Usuário cadastrado com sucesso!';
-                            $this->cadastrar();
+                            $mensagem = 'Usuário cadastrado com sucesso!';
+                            $this->cadastrar($mensagem);
                         } else {
-                            $this->session->set_flashdata('msg', 'Não foi possível cadastrar usuário!');
-                            redirect('usuario/cadastrar');
+                            $mensagem = 'Não foi possível cadastrar usuário!';
+                            $this->cadastrar($mensagem);
                         }
                     } else {
-                        $this->session->set_flashdata('msg', 'Não foi possível cadastrar usuário! Username já cadastrado.');
-                        redirect('usuario/cadastrar');
+                        $mensagem = 'Não foi possível cadastrar usuário! Username já cadastrado.';
+                        $this->cadastrar($mensagem);
                     }    
                 } else {
-                    $this->session->set_flashdata('msg', 'Senhas diferentes!');
-                    redirect('usuario/cadastrar');
+                    $mensagem = 'Senhas diferentes!';
+                    $this->cadastrar($mensagem);
                 }
                     
             }

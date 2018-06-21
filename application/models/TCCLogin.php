@@ -14,7 +14,7 @@ class TCCLogin extends CI_Model {
         $resultado = $query->result();
         if(!empty($resultado)){
             $result = $query->row();
-            if ($senha == $result->senha/*password_verify($senha, $result->senha)*/) {
+            if (password_verify($senha, $result->senha)) {
                 return $result;
             } else {
                 return false;
