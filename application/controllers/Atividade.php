@@ -50,14 +50,14 @@ class Atividade extends CI_Controller {
     public function cadastrarPergunta($mensagem = NULL) {
         if ($this->session->userdata('loginuser')) {
             $data['mensagem'] = $mensagem;
-        
+            
         $this->load->view('atividade/cadastrarPerguntaView', $data);
         } else {
             $this->load->view('welcome_message');
         }
     }
     
-    public function inserirPergunta() {
+    public function inserirPergunta($id = NULL) {
         $post = $this->input->post();
         $this->load->library('form_validation');
         $this->form_validation->set_rules("descricao", "Descricao", "required");
@@ -78,12 +78,23 @@ class Atividade extends CI_Controller {
             $data['alternativa3'] = $post['alternativa3'];
             $data['ativo'] = $post['ativo'];
             
-            if($this->modelAtividade->inserirPergunta($data)) {
-                $mensagem = 'Pergunta cadastrada com sucesso!';
-                $this->cadastrarPergunta($mensagem);
+            if($id) { //edicao
+                $data['id'] = $id;
+                if ($this->modelAtividade->atualizarPergunta($data)) {
+                        $mensagem = 'Pergunta atualizada com sucesso!';
+                        $this->editarPergunta($id, $mensagem);
+                } else {
+                        $mensagem = 'Não foi possível atualizar pergunta!';
+                        $this->editarPergunta($id, $mensagem);
+                }
             } else {
-                $mensagem = 'Não foi possível cadastrar pergunta!';
-                $this->cadastrarPergunta($mensagem);
+                if($this->modelAtividade->inserirPergunta($data)) {
+                    $mensagem = 'Pergunta cadastrada com sucesso!';
+                    $this->cadastrarPergunta($mensagem);
+                } else {
+                    $mensagem = 'Não foi possível cadastrar pergunta!';
+                    $this->cadastrarPergunta($mensagem);
+                }
             }
         
         
@@ -277,6 +288,25 @@ class Atividade extends CI_Controller {
                     . 'participação.';
             $this->index($mensagem);
         }
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function verPerguntas () {
+        if ($this->session->userdata('loginuser')) {
+            $data['perguntas'] = $this->modelAtividade->getTodasPerguntas();
+            $this->load->view('atividade/verPerguntasView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function editarPergunta ($idPergunta, $mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            $data['dados_pergunta'] = $this->modelAtividade->getPergunta($idPergunta);
+            $this->load->view('atividade/cadastrarPerguntaView', $data);
         } else {
             $this->load->view('welcome_message');
         }

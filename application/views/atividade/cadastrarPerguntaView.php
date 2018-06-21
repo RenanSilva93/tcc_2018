@@ -2,7 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('templates/header');
 
-echo form_open('atividade/inserirPergunta/');
+if($dados_pergunta) {
+    $edicao = TRUE;
+    echo form_open('atividade/inserirPergunta/'.$dados_pergunta->id);
+} else {
+    $edicao = FALSE;
+    echo form_open('atividade/inserirPergunta/');
+}
+
 ?>
 
 <div class="text-center">
@@ -20,44 +27,54 @@ echo form_open('atividade/inserirPergunta/');
 
     <div class="form-inline">
         <label class="col-sm-4" for="descricao">Descrição:</label>
-        <textarea class="form-control col-sm-5" id="descricao" name="descricao" cols="5" rows="5" required></textarea>
+        <textarea class="form-control col-sm-5" id="descricao" name="descricao" cols="5" rows="5" required><?php echo ($edicao) ? $dados_pergunta->descricao : set_value('descricao'); ?></textarea>
     </div>
     
     <div class="form-inline">
         <label class="col-sm-4" for="valor">Valor da questão:</label>
-        <input class="form-control col-sm-5" id="valor" name="valor" type="number" required/>
+        <input class="form-control col-sm-5" id="valor" name="valor" type="number" value="<?php echo ($edicao) ? $dados_pergunta->valor : set_value('valor'); ?>" required/>
     </div>
     
     <div class="form-inline">
         <label class="col-sm-4" for="fase">Fase:</label>
-        <input class="form-control col-sm-5" id="fase" name="fase" type="number" required/>
+        <input class="form-control col-sm-5" id="fase" name="fase" type="number" value="<?php echo ($edicao) ? $dados_pergunta->nivel : set_value('nivel'); ?>" required/>
     </div>
 
     <div class="form-inline">
         <label class="col-sm-4" for="certa">Alternativa Certa:</label>
-        <textarea class="form-control col-sm-5" id="certa" name="certa" cols="5" rows="5" required></textarea>
+        <textarea class="form-control col-sm-5" id="certa" name="certa" cols="5" rows="5" required><?php echo ($edicao) ? $dados_pergunta->alternativa_certa : set_value('alternativa_certa'); ?></textarea>
     </div>
 
     <div class="form-inline">
         <label class="col-sm-4" for="alternativa1">Alternativa 1: </label>
-        <textarea class="form-control col-sm-5" id="alternativa1" name="alternativa1" cols="5" rows="2" required></textarea>
+        <textarea class="form-control col-sm-5" id="alternativa1" name="alternativa1" cols="5" rows="2" required><?php echo ($edicao) ? $dados_pergunta->alternativa1 : set_value('alternativa1'); ?></textarea>
     </div>
     
     <div class="form-inline">
         <label class="col-sm-4" for="alternativa2">Alternativa 2: </label>
-        <textarea class="form-control col-sm-5" id="alternativa2" name="alternativa2" cols="5" rows="2" required></textarea>
+        <textarea class="form-control col-sm-5" id="alternativa2" name="alternativa2" cols="5" rows="2" required><?php echo ($edicao) ? $dados_pergunta->alternativa2 : set_value('alternativa2'); ?></textarea>
     </div>
     
     <div class="form-inline">
         <label class="col-sm-4" for="alternativa3">Alternativa 3: </label>
-        <textarea class="form-control col-sm-5" id="alternativa3" name="alternativa3" cols="5" rows="2" required></textarea>
+        <textarea class="form-control col-sm-5" id="alternativa3" name="alternativa3" cols="5" rows="2" required><?php echo ($edicao) ? $dados_pergunta->alternativa3 : set_value('alternativa3'); ?></textarea>
     </div>
     
     <div class="form-inline">
         <label class="col-sm-4" for="ativo">Ativo: </label>
             <select class="form-control col-sm-5" name="ativo" id="ativo" required>
+                <?php if($edicao) {
+                    if($dados_pergunta->ativo) { ?>
+                        <option value="<?php echo TRUE; ?>" selected >SIM</option>
+                        <option value="<?php echo FALSE; ?>">NÃO</option>
+                    <?php } else { ?>
+                        <option value="<?php echo TRUE; ?>">SIM</option>
+                        <option value="<?php echo FALSE; ?>" selected >NÃO</option>
+                   <?php }
+                } else { ?>
                     <option value="<?php echo TRUE; ?>">SIM</option>
                     <option value="<?php echo FALSE; ?>">NÃO</option>
+                <?php } ?>
             </select> 
     </div>
 

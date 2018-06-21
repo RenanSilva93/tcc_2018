@@ -37,7 +37,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <a href="<?php echo base_url(). 'index.php/atividade/index'; ?>">Página Principal</a>
                         </li>
                         
-                        <?php if ($this->session->userdata('tipo_usuario') == '1') { ?>
+                        <?php if ($this->session->userdata('tipo_usuario') == ADMINISTRADOR) { ?>
+                        
+                        <li class="text-left">
+                            <a href="<?php echo base_url(). 'index.php/atividade/verPerguntas'; ?>">Ver todas as perguntas</a>
+                        </li>
                         
                         <li class="text-left">
                             <a href="<?php echo base_url(). 'index.php/atividade/cadastrarPergunta'; ?>">Cadastro de Pergunta</a>

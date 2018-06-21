@@ -22,6 +22,12 @@ class TCCAtividade extends CI_Model {
         return $resultado;
     }
     
+    public function getTodasPerguntas() {
+        $query = $this->db->get_where(TABELA_PERGUNTA);
+        $resultado = $query->result_array();
+        return $resultado;
+    }
+    
     public function inserirPontuacao($data) {
         $this->db->insert(TABELA_GAMIFICACAO, $data);
     }
@@ -70,6 +76,15 @@ class TCCAtividade extends CI_Model {
         $query = $this->db->get_where(TABELA_QUESTIONARIO, $array);
         $resultado = $query->row();
         return $resultado;
+    }
+    
+    public function atualizarPergunta($data) {
+        $array = array('id' => $data['id']);
+        $this->db->where($array);
+        $this->db->set($data);
+        $this->db->update(TABELA_PERGUNTA);
+        
+        return true;
     }
 }
 
