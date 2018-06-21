@@ -68,7 +68,7 @@ class Atividade extends CI_Controller {
             $data['alternativa1'] = $post['alternativa1'];
             $data['alternativa2'] = $post['alternativa2'];
             $data['alternativa3'] = $post['alternativa3'];
-            $data['ativo'] = TRUE;
+            $data['ativo'] = $post['ativo'];
             
             if($this->modelAtividade->inserirPergunta($data)) {
                 $mensagem = 'Pergunta cadastrada com sucesso!';

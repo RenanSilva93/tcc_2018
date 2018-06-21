@@ -52,6 +52,14 @@ echo form_open('atividade/inserirPergunta/');
         <label class="col-sm-4" for="alternativa3">Alternativa 3: </label>
         <textarea class="form-control col-sm-5" id="alternativa3" name="alternativa3" cols="5" rows="2" required></textarea>
     </div>
+    
+    <div class="form-inline">
+        <label class="col-sm-4" for="ativo">Ativo: </label>
+            <select class="form-control col-sm-5" name="ativo" id="ativo" required>
+                    <option value="<?php echo TRUE; ?>">SIM</option>
+                    <option value="<?php echo FALSE; ?>">NÃO</option>
+            </select> 
+    </div>
 
     <div class="form-inline">
         <div class="col-sm-12">
