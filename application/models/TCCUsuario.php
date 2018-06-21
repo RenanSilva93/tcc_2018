@@ -153,6 +153,15 @@ class TCCUsuario extends CI_Model {
             return false;
         }
     }
+    
+    public function mudarSenha($data) {
+        $array = array('username' => $data['username']);
+        $this->db->where($array);
+        $this->db->set($data);
+        $this->db->update(TABELA_USUARIO);
+        
+        return true;
+    }
 }
 
 

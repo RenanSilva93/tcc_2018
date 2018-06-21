@@ -11,11 +11,10 @@ html {
 }*/
 
 .footer {
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     background-color: #ADD8E6;
-    /*position: fixed;*/
-    padding: 10px 0 10px 0;
+    position:absolute;
 }
 
 .nav-container {

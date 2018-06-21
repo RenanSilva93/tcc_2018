@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('templates/header');
 
-if($dados_pergunta) {
+if(isset($dados_pergunta)) {
     $edicao = TRUE;
     echo form_open('atividade/inserirPergunta/'.$dados_pergunta->id);
 } else {
