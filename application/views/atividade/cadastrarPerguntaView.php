@@ -77,6 +77,8 @@ if(isset($dados_pergunta)) {
                 <?php } ?>
             </select> 
     </div>
+    
+    <input type="hidden" name="quiz" id="quiz" value="<?php echo $quiz; ?>">
 
     <div class="form-inline">
         <div class="col-sm-12">

@@ -37,7 +37,8 @@ class Login extends CI_Controller {
                     'nome' => $usuario->nome,
                     'email' => $usuario->email,
                     'tipo_usuario' => $usuario->tipo_usuario,
-                    'id' => $usuario->id
+                    'id' => $usuario->id,
+                    'id_quiz' => $usuario->id_quiz
                 );
                 $this->session->set_userdata($sessiondata);
                 redirect('atividade/index');

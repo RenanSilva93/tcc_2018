@@ -89,6 +89,7 @@ defined('TABELA_USUARIO')       OR define('TABELA_USUARIO', 'usuario');
 defined('TABELA_PERGUNTA')       OR define('TABELA_PERGUNTA', 'pergunta');
 defined('TABELA_GAMIFICACAO')       OR define('TABELA_GAMIFICACAO', 'gamificacao');
 defined('TABELA_QUESTIONARIO')       OR define('TABELA_QUESTIONARIO', 'questionario');
+defined('TABELA_QUIZ')          OR define('TABELA_QUIZ', 'quiz');
 
 //Tipo Usuario
 defined('ADMINISTRADOR')       OR define('ADMINISTRADOR', '1');

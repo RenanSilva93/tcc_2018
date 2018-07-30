@@ -162,6 +162,21 @@ class TCCUsuario extends CI_Model {
         
         return true;
     }
+    
+    public function getUsuariosQuiz($idQuiz, $time, $index) {
+        if($index == 1) {
+            $array = array('id_quiz' => $idQuiz, 'ano_escolar' => $time);
+            $query = $this->db->get_where(TABELA_USUARIO, $array);
+            $resultado = $query->result_array();
+            return $resultado;
+        } else if($index == 2) {
+            $array = array('id_quiz' => $idQuiz, 'ano_escolar' => $time);
+            $query = $this->db->get_where(TABELA_USUARIO, $array);
+            $resultado = $query->result_array();
+            return $resultado;
+        }
+        
+    }
 }
 
 

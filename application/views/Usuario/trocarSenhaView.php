@@ -52,7 +52,9 @@ $this->load->view('templates/header');
     </div>
 </div>
 </div>
-</div
+<!--</div>-->
+<br>
+<br>
 
 <?php echo form_close(); ?>
 

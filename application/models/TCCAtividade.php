@@ -22,8 +22,9 @@ class TCCAtividade extends CI_Model {
         return $resultado;
     }
     
-    public function getTodasPerguntas() {
-        $query = $this->db->get_where(TABELA_PERGUNTA);
+    public function getTodasPerguntas($id_quiz) {
+        $array = array('id_quiz' => $id_quiz);
+        $query = $this->db->get_where(TABELA_PERGUNTA, $array);
         $resultado = $query->result_array();
         return $resultado;
     }
@@ -32,8 +33,8 @@ class TCCAtividade extends CI_Model {
         $this->db->insert(TABELA_GAMIFICACAO, $data);
     }
     
-    public function getGamificacaoIdUsuario($idUsuario, $nivel) {
-        $array = array('id_usuario' => $idUsuario, 'nivel' => $nivel);
+    public function getGamificacaoIdUsuario($idUsuario, $nivel, $idQuiz) {
+        $array = array('id_usuario' => $idUsuario, 'nivel' => $nivel, 'id_quiz' => $idQuiz);
         $query = $this->db->get_where(TABELA_GAMIFICACAO, $array);
         $resultado = $query->result_array();
         return $resultado;
@@ -61,8 +62,9 @@ class TCCAtividade extends CI_Model {
         return $resultado;
     }
     
-    public function getPontos() {
-        $query = $this->db->get_where(TABELA_GAMIFICACAO);
+    public function getPontos($idQuiz) {
+        $array = array('id_quiz' => $idQuiz);
+        $query = $this->db->get_where(TABELA_GAMIFICACAO, $array);
         $resultado = $query->result_array();
         return $resultado;
     }
@@ -83,6 +85,37 @@ class TCCAtividade extends CI_Model {
         $this->db->where($array);
         $this->db->set($data);
         $this->db->update(TABELA_PERGUNTA);
+        
+        return true;
+    }
+    
+    public function inserirQuiz($data){
+        if($this->db->insert(TABELA_QUIZ, $data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getQuiz($idQuiz) {
+        $array = array('id' => $idQuiz);
+        $query = $this->db->get_where(TABELA_QUIZ, $array);
+        $resultado = $query->row();
+        return $resultado;
+    }
+    
+    public function getQuizzes($idProfessor) {
+        $array = array('id_Professor' => $idProfessor);
+        $query = $this->db->get_where(TABELA_QUIZ, $array);
+        $resultado = $query->result_array();
+        return $resultado;
+    }
+    
+    public function atualizarQuiz($data) {
+        $array = array('id' => $data['id']);
+        $this->db->where($array);
+        $this->db->set($data);
+        $this->db->update(TABELA_QUIZ);
         
         return true;
     }

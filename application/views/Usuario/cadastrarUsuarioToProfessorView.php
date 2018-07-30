@@ -2,23 +2,18 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('templates/header');
 
-echo form_open('usuario/inserir/');
+echo form_open('usuario/inserirUsuario/'.$quiz->id);
 ?>
 
 <div class="text-center">
     <div id="aviso">
-        <?php echo $this->session->flashdata('msg'); ?>
+        <?php if(isset($mensagem)) {
+            echo $mensagem;
+        } ?>
     </div>
 </div><br>
 
-<script src="<?php echo base_url('include/jquery/maskedinput.js') ?>"></script>
-
 <div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-sm-5">
-            <a href="<?php echo base_url(); ?>" class="btn btn-success">Entrar no Sistema</a>
-        </div>
-    </div>
     
     <center><h3><?php echo "Cadastro de Usuário"; ?></h3></center>
     
@@ -46,11 +41,6 @@ echo form_open('usuario/inserir/');
     </div>
 
     <div class="form-inline">
-        <label class="col-sm-4" for="telefone">Telefone:</label>
-        <input class="form-control col-sm-5" placeholder="Telefone" id="telefone" name="telefone" type="text"/>
-    </div>
-
-    <div class="form-inline">
         <label class="col-sm-4" for="email">E-mail:</label>
         <input class="form-control col-sm-5" placeholder="E-mail" id="email" name="email" type="text"/>
     </div>
@@ -66,11 +56,11 @@ echo form_open('usuario/inserir/');
     </div>
     
     <div class="form-inline">
-        <label class="col-sm-4" for="ano_escolar">Ano Escolar:*</label>
-            <select class="form-control col-sm-5" name="ano_escolar" id="ano_escolar">
+        <label class="col-sm-4" for="ano_escolar">Time:*</label>
+            <select class="form-control col-sm-5" name="time" id="time">
                 <option value="" selected>Selecione...</option>
-                    <option value="B">3ºB</option>
-                    <option value="C">3ºC</option>
+                    <option value="<?php echo $quiz->time1 ?>"><?php echo $quiz->time1 ?></option>
+                    <option value="<?php echo $quiz->time2 ?>"><?php echo $quiz->time2 ?></option>
             </select> 
     </div>
     
@@ -101,6 +91,3 @@ echo form_open('usuario/inserir/');
 
 <?php $this->load->view('templates/footer'); ?>
 
-<script>
-    //$('#telefone').mask('(99)99999-9999');
-</script>

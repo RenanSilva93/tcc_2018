@@ -20,9 +20,7 @@ $fim = false;
         <div class="col-sm-10">
             <p><strong>Seja bem vindo(a) ao Quiz Literário,</strong></p>
             
-            <p><?php echo $quiz->descricao; ?></p>
-            
-            <!--<p>A sua missão é conseguir completar todas as fases do quiz literário e ajudar a sua turma a 
+            <p>A sua missão é conseguir completar todas as fases do quiz literário e ajudar a sua turma a 
             ganhar este desafio. O quiz é composto por 3 fases, sendo a fase 1 valendo 30 pontos, a fase 
             2 valendo 60 pontos e a fase 3 valendo 90 pontos.</p>
             
@@ -39,7 +37,7 @@ $fim = false;
             
             <p>Quem ganhará este desafio literário?? A turma B ou a turma C??</p>
             
-            <p>Então vamos jogar!!!!</p>-->
+            <p>Então vamos jogar!!!!</p>
             
             <?php echo '<p><strong>Sua pontuação: '.$pontosUsuario.' pontos</strong></p>' ?>
         </div>
@@ -52,12 +50,6 @@ $fim = false;
         <?php if(empty($gamificacao1)) { ?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. 1; ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase1jogar.png'); ?>" class="img-responsive"/></a><br>
                 
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 1: '.$quiz->tema1; ?></h3>
-                    </div>
-                </div>
-            
         <?php } else { 
             $qtdZero = 0;
             foreach ($gamificacao1 as $gamificacao) {
@@ -69,23 +61,11 @@ $fim = false;
             if($qtdZero > 1) { //precisa fazer de novo?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. '1/true'; ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase1jogar.png'); ?>" class="img-responsive"/></a>
                 
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 1: '.$quiz->tema1; ?></h3>
-                    </div>
-                </div>
-                
         <?php } else { 
             $liberado2 = TRUE;?>
             
                 <a href="<?php echo base_url(). 'index.php/atividade/verResposta/'. '1/'.$this->session->userdata('id'); ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase1resposta.png'); ?>" class="img-responsive"/></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 1: '.$quiz->tema1; ?></h3>
-                    </div>
-                </div>
-                
+            
         <?php } ?>
         <?php } ?>
             </div>
@@ -98,13 +78,7 @@ $fim = false;
         <div class="col-sm-8">
         <?php if(empty($gamificacao2) && $liberado2) { ?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. 2; ?>"><img style="width:100%;" src="<?php echo base_url('include/imagem/fase2jogar.png'); ?>" class="img-responsive"/></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 2: '.$quiz->tema2; ?></h3>
-                    </div>
-                </div>
-                
+
         <?php } else { 
             $qtdZero = 0;
             foreach ($gamificacao2 as $gamificacao) {
@@ -115,33 +89,14 @@ $fim = false;
             
             if($qtdZero > 1) { //precisa fazer de novo?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. '2/true'; ?>"><img style="width:100%;" src="<?php echo base_url('include/imagem/fase2jogar.png'); ?>" class="img-responsive"/></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 2: '.$quiz->tema2; ?></h3>
-                    </div>
-                </div>
-                
+
         <?php } else {
             if(!$liberado2) {
                 //$liberado3 = FALSE; ?>
                 <img style="width:100%;" src="<?php echo base_url('include/imagem/fase2bloqueada.png'); ?>" class="img-responsive"/>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 2: '.$quiz->tema2; ?></h3>
-                    </div>
-                </div>
-                
         <?php } else {
                 $liberado3 = TRUE; ?>
                 <a href="<?php echo base_url(). 'index.php/atividade/verResposta/'. '2/'.$this->session->userdata('id'); ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase2resposta.png'); ?>" class="img-responsive"/><br></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 2: '.$quiz->tema2; ?></h3>
-                    </div>
-                </div>
                 
         <?php }
              ?>
@@ -158,12 +113,6 @@ $fim = false;
         <?php if(empty($gamificacao3) && $liberado3) { ?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. 3; ?>"><img style="width:100%;" src="<?php echo base_url('include/imagem/fase3jogar.png'); ?>" class="img-responsive"/></a>
 
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 3: '.$quiz->tema3; ?></h3>
-                    </div>
-                </div>
-                
         <?php } else {
             $qtdZero = 0;
             foreach ($gamificacao3 as $gamificacao) {
@@ -174,33 +123,13 @@ $fim = false;
             
             if($qtdZero > 1) { //precisa fazer de novo?>
                 <a href="<?php echo base_url(). 'index.php/atividade/jogarFase/'. '3/true'; ?>"><img style="width:100%;" src="<?php echo base_url('include/imagem/fase3jogar.png'); ?>" class="img-responsive"/></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 3: '.$quiz->tema3; ?></h3>
-                    </div>
-                </div>
-                
+
         <?php } else { 
             if(!$liberado3) { ?>
                 <img style="width:100%;" src="<?php echo base_url('include/imagem/fase3bloqueada.png'); ?>" class="img-responsive"/>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 3: '.$quiz->tema3; ?></h3>
-                    </div>
-                </div>
-                
         <?php } else { 
             $fim = true;?>
-                <a href="<?php echo base_url(). 'index.php/atividade/verResposta/'. '3/'.$this->session->userdata('id'); ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase3resposta.png'); ?>" class="img-responsive"/><br></a>
-                
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h3 style="text-align: center;"><?php echo 'Fase 3: '.$quiz->tema3; ?></h3>
-                    </div>
-                </div>
-                
+                <a href="<?php echo base_url(). 'index.php/atividade/verResposta/'. '3/'.$this->session->userdata('id'); ?>"><img style="width: 100%;" src="<?php echo base_url('include/imagem/fase3resposta.png'); ?>" class="img-responsive"/><br></a> 
         <?php } ?>
 
         <?php } ?>
@@ -226,9 +155,9 @@ $fim = false;
     <div class="row">
         <div class="col-sm-12 text-center">
             <strong>PLACAR ATUAL: </strong><br>
-            <font style="color: red; font-size: 150px"><?php echo $quiz->time1.' '.intval($pontosB); ?></font>
+            <font style="color: red; font-size: 150px"><?php echo '3B '.intval($pontosB); ?></font>
             <font style="color: red; font-size: 100px"><?php echo 'x'; ; ?></font>
-            <font style="color: red; font-size: 150px"><?php echo intval($pontosC).' '.$quiz->time2 ; ?></font>
+            <font style="color: red; font-size: 150px"><?php echo intval($pontosC).' 3C' ; ?></font>
         </div>
     </div>
     

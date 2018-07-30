@@ -91,5 +91,6 @@ $this->load->view('templates/header');
         </div><br>
          <?php } $i++; } ?>
 </div>
+<br><br>
 
 <?php $this->load->view('templates/footer'); ?>

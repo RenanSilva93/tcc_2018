@@ -20,7 +20,7 @@ echo form_open('atividade/responderQuiz/');
     } else {
     $num[$j++] = $rand;?>
     <div class="row">
-        <strong>Pergunta <?php echo $i; ?>: </strong><br> <?php echo $perguntas[$rand]['descricao'] ?>       
+        <strong>Pergunta <?php echo $i; ?>: </strong><br> <?php echo trim($perguntas[$rand]['descricao']) ?>       
     </div><br>
     
     <?php $k = 1;$l=0;

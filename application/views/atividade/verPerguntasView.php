@@ -5,6 +5,7 @@ $this->load->view('templates/header'); ?>
 <script src="//cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
 
+<div class="container">
 <?php if (!empty($perguntas)) { ?>
     <div class="table-responsive">
         <table id="tabelaPergunta" border="1" class="table table-hover table-bordered">
@@ -37,7 +38,7 @@ $this->load->view('templates/header'); ?>
                         } else {
                             echo 'NÃO';
                             } ?></td>
-                        <td><a href="<?php echo site_url('atividade/editarPergunta/' . $pergunta['id']) ?>" title='Editar'>Editar</a></td>
+                        <td><a href="<?php echo site_url('atividade/editarPergunta/' . $pergunta['id'].'/'.$pergunta['id_quiz']) ?>" title='Editar'>Editar</a></td>
                         
                     </tr>
     <?php } ?>
@@ -49,6 +50,8 @@ $this->load->view('templates/header'); ?>
         Não há perguntas cadastradas.
     </div>
 <?php } ?>
+    </div>
+<br><br>
 
 <script type="text/javascript">
     $(document).ready(function () {

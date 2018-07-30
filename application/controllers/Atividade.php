@@ -9,13 +9,17 @@ class Atividade extends CI_Controller {
         $this->load->model('TCCAtividade', 'modelAtividade', TRUE);
         $this->load->library('session');
     }
-    
+
     public function index($mensagem = NULL) {
         if ($this->session->userdata('loginuser')) {
-        $data['gamificacao1'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 1);
-        $data['gamificacao2'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 2);
-        $data['gamificacao3'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 3);
-        $pontos = $this->modelAtividade->getPontos();
+            if($this->session->userdata('tipo_usuario') != PROFESSOR) {
+                
+        $data['gamificacao1'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 1, $this->session->userdata('id_quiz'));
+        $data['gamificacao2'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 2, $this->session->userdata('id_quiz'));
+        $data['gamificacao3'] = $this->modelAtividade->getGamificacaoIdUsuario($this->session->userdata('id'), 3, $this->session->userdata('id_quiz'));
+        $pontos = $this->modelAtividade->getPontos($this->session->userdata('id_quiz'));
+        $quiz = $this->modelAtividade->getQuiz($this->session->userdata('id_quiz'));
+        
         $turmaB = 0;
         $turmaC = 0;
         $pontosUsuario = 0;
@@ -27,24 +31,34 @@ class Atividade extends CI_Controller {
                 $pontosUsuario = $pontosUsuario + $ponto['pontuacao'];
             }
 
-            if($usuario->ano_escolar == 'B') {
+            if($usuario->ano_escolar == $quiz->time1) {
                 $turmaB = $turmaB + $ponto['pontuacao'];
-            } else if($usuario->ano_escolar == 'C') {
+            } else if($usuario->ano_escolar == $quiz->time2) {
                 $turmaC = $turmaC + $ponto['pontuacao'];
             }
         }
-
-        $data['pontosB'] = $turmaB/TURMAB;
-        $data['pontosC'] = $turmaC/TURMAC;
+        
+        $qtd1 = $usuarios = $this->modelUsuario->getUsuariosQuiz($this->session->userdata('id_quiz'), $quiz->time1, 1);
+        $qtd2 = $usuarios = $this->modelUsuario->getUsuariosQuiz($this->session->userdata('id_quiz'), $quiz->time2, 2);
+        
+        $data['pontosB'] = $turmaB/count($qtd1);
+        $data['pontosC'] = $turmaC/count($qtd2);
         
         $data['pontosUsuario'] = $pontosUsuario;
+        
+        $data['quiz'] = $quiz;
         
         $data['mensagem'] = $mensagem;
         
         $this->load->view('atividade/principal', $data);
         } else {
+            $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            $this->load->view('atividade/indexProfessorView', $data);
+        }
+        } else {
             $this->load->view('welcome_message');
         }
+        
     }
     
     public function cadastrarPergunta($mensagem = NULL) {
@@ -67,37 +81,36 @@ class Atividade extends CI_Controller {
         $this->form_validation->set_rules("alternativa1", "Alternativa", "required");
         $this->form_validation->set_rules("alternativa12", "Alternativa", "required"); 
         $this->form_validation->set_rules("alternativa13", "Alternativa", "required"); 
-
         
-            $data['descricao'] = $post['descricao'];
-            $data['valor'] = $post['valor'];
-            $data['nivel'] = $post['fase'];
-            $data['alternativa_certa'] = $post['certa'];
-            $data['alternativa1'] = $post['alternativa1'];
-            $data['alternativa2'] = $post['alternativa2'];
-            $data['alternativa3'] = $post['alternativa3'];
-            $data['ativo'] = $post['ativo'];
+        $texto = nl2br($post['descricao']);
+        $data['descricao'] = trim($texto);
+        $data['valor'] = $post['valor'];
+        $data['nivel'] = $post['fase'];
+        $data['alternativa_certa'] = $post['certa'];
+        $data['alternativa1'] = $post['alternativa1'];
+        $data['alternativa2'] = $post['alternativa2'];
+        $data['alternativa3'] = $post['alternativa3'];
+        $data['ativo'] = $post['ativo'];
+        $data['id_quiz'] = $post['quiz'];
             
-            if($id) { //edicao
-                $data['id'] = $id;
-                if ($this->modelAtividade->atualizarPergunta($data)) {
-                        $mensagem = 'Pergunta atualizada com sucesso!';
-                        $this->editarPergunta($id, $mensagem);
-                } else {
-                        $mensagem = 'Não foi possível atualizar pergunta!';
-                        $this->editarPergunta($id, $mensagem);
-                }
+        if($id) { //edicao
+            $data['id'] = $id;
+            if ($this->modelAtividade->atualizarPergunta($data)) {
+                    $mensagem = 'Pergunta atualizada com sucesso!';
+                    $this->editarPergunta($id, $post['quiz'], $mensagem);
             } else {
-                if($this->modelAtividade->inserirPergunta($data)) {
-                    $mensagem = 'Pergunta cadastrada com sucesso!';
-                    $this->cadastrarPergunta($mensagem);
-                } else {
-                    $mensagem = 'Não foi possível cadastrar pergunta!';
-                    $this->cadastrarPergunta($mensagem);
-                }
+                    $mensagem = 'Não foi possível atualizar pergunta!';
+                    $this->editarPergunta($id, $post['quiz'], $mensagem);
             }
-        
-        
+        } else {
+            if($this->modelAtividade->inserirPergunta($data)) {
+                $mensagem = 'Pergunta cadastrada com sucesso!';
+                $this->inserirPerguntaToProfessorQuiz($mensagem, $post['quiz']);
+            } else {
+                $mensagem = 'Não foi possível cadastrar pergunta!';
+                $this->inserirPerguntaToProfessorQuiz($mensagem, $post['quiz']);
+            }
+        }        
     }
     
     public function jogarFase($nivel, $denovo = NULL) {
@@ -210,7 +223,7 @@ class Atividade extends CI_Controller {
     
     public function verResposta($nivel, $idUsuario) {
         if ($this->session->userdata('loginuser')) {
-        $gamificacao = $this->modelAtividade->getGamificacaoIdUsuario($idUsuario, $nivel);
+        $gamificacao = $this->modelAtividade->getGamificacaoIdUsuario($idUsuario, $nivel, $this->session->userdata('id_quiz'));
         $soma = 0;
         foreach ($gamificacao as $game) {
             $soma = $soma + $game['pontuacao'];
@@ -295,18 +308,125 @@ class Atividade extends CI_Controller {
     
     public function verPerguntas () {
         if ($this->session->userdata('loginuser')) {
-            $data['perguntas'] = $this->modelAtividade->getTodasPerguntas();
+            $post = $this->input->post();
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules("quiz", "Quiz", "required");
+
+            $data['perguntas'] = $this->modelAtividade->getTodasPerguntas($post['quiz']);
             $this->load->view('atividade/verPerguntasView', $data);
         } else {
             $this->load->view('welcome_message');
         }
     }
     
-    public function editarPergunta ($idPergunta, $mensagem = NULL) {
+    public function editarPergunta ($idPergunta, $idQuiz = NULL, $mensagem = NULL) {
         if ($this->session->userdata('loginuser')) {
             $data['mensagem'] = $mensagem;
             $data['dados_pergunta'] = $this->modelAtividade->getPergunta($idPergunta);
+            $data['quiz'] = $idQuiz;
             $this->load->view('atividade/cadastrarPerguntaView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function cadastrarQuiz ($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            $this->load->view('atividade/cadastrarQuizView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function inserirQuiz($id = NULL) {
+        $post = $this->input->post();
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules("nome", "Nome", "required");
+        $this->form_validation->set_rules("tema1", "tema1", "required");
+        $this->form_validation->set_rules("tema2", "tema2", "required");
+        $this->form_validation->set_rules("tema3", "tema3", "required");
+        $this->form_validation->set_rules("time1", "time1", "required");
+        $this->form_validation->set_rules("time2", "time2", "required"); 
+        $this->form_validation->set_rules("ativo", "ativo", "required"); 
+        
+        $data['nome'] = $post['nome'];
+        $data['tema1'] = $post['tema1'];
+        $data['tema2'] = $post['tema2'];
+        $data['tema3'] = $post['tema3'];
+        $data['time1'] = $post['time1'];
+        $data['time2'] = $post['time2'];
+        $data['ativo'] = $post['ativo'];
+        $data['id_Professor'] = $this->session->userdata('id');
+        $data['descricao'] = nl2br($post['descricao']);
+            
+        if($id) { //edicao
+            $data['id'] = $id;
+            if ($this->modelAtividade->atualizarQuiz($data)) {
+                    $mensagem = 'Quiz atualizado com sucesso!';
+                    $this->editarQuiz($id, $mensagem);
+            } else {
+                    $mensagem = 'Não foi possível atualizar quiz!';
+                    $this->editarQuiz($id, $mensagem);
+            }
+        } else {
+            if($this->modelAtividade->inserirQuiz($data)) {
+                $mensagem = 'Quiz cadastrado com sucesso!';
+                $this->cadastrarQuiz($mensagem);
+            } else {
+                $mensagem = 'Não foi possível cadastrar quiz!';
+                $this->cadastrarQuiz($mensagem);
+            }
+        }  
+    }
+    
+    public function editarQuiz ($idQuiz, $mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            $data['dados_quiz'] = $this->modelAtividade->getQuiz($idQuiz);
+            $this->load->view('atividade/cadastrarQuizView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function cadastrarPerguntaToProfessor($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            $data['funcao'] = 'atividade/inserirPerguntaToProfessorQuiz';
+            $this->load->view('atividade/escolherQuizView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function inserirPerguntaToProfessorQuiz($mensagem = NULL, $idQuiz = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $post = $this->input->post();
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules("quiz", "Quiz", "required");
+            
+            if($idQuiz) {
+               $data['quiz'] = $idQuiz; 
+            } else {
+                $data['quiz'] = $post['quiz'];
+            }
+            
+            $data['mensagem'] = $mensagem;
+            
+            $this->load->view('atividade/cadastrarPerguntaView', $data);
+        } else {
+            $this->load->view('welcome_message');
+        }
+    }
+    
+    public function verListaPergunta($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            $data['funcao'] = 'atividade/verPerguntas';
+            $this->load->view('atividade/escolherQuizView', $data);
         } else {
             $this->load->view('welcome_message');
         }
