@@ -15,8 +15,8 @@ class TCCAtividade extends CI_Model {
         }
     }
     
-    public function getPerguntas($nivel) {
-        $array = array('nivel' => $nivel);
+    public function getPerguntas($nivel, $idQuiz) {
+        $array = array('nivel' => $nivel, 'id_quiz' => $idQuiz);
         $query = $this->db->get_where(TABELA_PERGUNTA, $array);
         $resultado = $query->result_array();
         return $resultado;
@@ -107,6 +107,12 @@ class TCCAtividade extends CI_Model {
     public function getQuizzes($idProfessor) {
         $array = array('id_Professor' => $idProfessor);
         $query = $this->db->get_where(TABELA_QUIZ, $array);
+        $resultado = $query->result_array();
+        return $resultado;
+    }
+    
+    public function getQuizzesAdm() {
+        $query = $this->db->get_where(TABELA_QUIZ);
         $resultado = $query->result_array();
         return $resultado;
     }

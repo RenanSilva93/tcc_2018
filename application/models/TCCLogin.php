@@ -12,7 +12,7 @@ class TCCLogin extends CI_Model {
         $array = array('username' => $username);
         $query = $this->db->get_where(TABELA_USUARIO, $array);
         $resultado = $query->result();
-        if(!empty($resultado)){
+        if (!empty($resultado)) {
             $result = $query->row();
             if (password_verify($senha, $result->senha)) {
                 return $result;
@@ -23,7 +23,6 @@ class TCCLogin extends CI_Model {
     }
 
 }
-
 ?>
 
 

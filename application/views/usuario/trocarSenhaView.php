@@ -7,20 +7,22 @@ $this->load->view('templates/header');
 
 <div class="text-center">
     <div id="aviso">
-        <?php if(isset($mensagem)) {
+        <?php
+        if (isset($mensagem)) {
             echo $mensagem;
-        } ?>
+        }
+        ?>
     </div>
 </div><br>
 
 <div class="form-group">
-        <div class="col-sm-5">
-            <a href="<?php echo base_url(); ?>" class="btn btn-success">Entrar no Sistema</a>
-        </div>
+    <div class="col-sm-5">
+        <a href="<?php echo base_url(); ?>" class="btn btn-success">Entrar no Sistema</a>
     </div>
+</div>
 
 <div class="container">
-    
+
     <p><h2>Trocar Senha de Usuário</h2></p>
 <br>
 

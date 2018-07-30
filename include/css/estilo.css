@@ -13,6 +13,7 @@ html {
 .footer {
     bottom: 0;
     width: 100%;
+    background-color: #ADD8E6;
     position:absolute;
 }
 
@@ -86,8 +87,4 @@ html {
     text-align: center;
     color: red;
     font-weight: bold;
-}
-
-#comeco {
-    background-color: blue;
 }

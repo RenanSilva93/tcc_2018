@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class TCCUsuario extends CI_Model {
@@ -13,16 +14,16 @@ class TCCUsuario extends CI_Model {
     private $data_nascimento;
     private $telefone;
     private $sexo;
-        
-    public function construct ($username = null, $id = null) {
+
+    public function construct($username = null, $id = null) {
         parent::__construct('usuario');
         $this->load->database();
 
         $resultado = NULL;
-        if($username) {
+        if ($username) {
             $query = $this->db->get_where(TABELA_USUARIO, array('username' => $username));
             $resultado = $query->row();
-        } else if($id) {
+        } else if ($id) {
             $query = $this->db->get_where(TABELA_USUARIO, array('id' => $id));
             $resultado = $query->row();
         }
@@ -40,143 +41,147 @@ class TCCUsuario extends CI_Model {
             $this->sexo = $resultado->sexo;
         }
     }
-    
+
     public function getId() {
-		return $this->id;
-	}
+        return $this->id;
+    }
 
-	public function setId($id) {
-		$this->id = $id;
-	}
-	
-	public function getNome() {
-		return $this->nome;
-	}
+    public function setId($id) {
+        $this->id = $id;
+    }
 
-	public function setNome($nome) {
-		$this->nome = $nome;
-	}
+    public function getNome() {
+        return $this->nome;
+    }
 
-	public function getUsername() {
-		return $this->username;
-	}
+    public function setNome($nome) {
+        $this->nome = $nome;
+    }
 
-	public function setUsername($username) {
-		$this->username = $username;
-	}
+    public function getUsername() {
+        return $this->username;
+    }
 
-	public function getEmail() {
-		return $this->email;
-	}
+    public function setUsername($username) {
+        $this->username = $username;
+    }
 
-	public function setEmail($email) {
-		$this->email = $email;
-	}
-        
-        public function getTipo_usuario() {
-		return $this->tipo_usuario;
-	}
+    public function getEmail() {
+        return $this->email;
+    }
 
-	public function setTipo_usuario($tipo_usuario) {
-		$this->tipo_usuario = $tipo_usuario;
-	}
-        
-        function getData_nascimento() {
-		return $this->data_nascimento;
-	}
-        
-        function setDataNascimento($data_nascimento) {
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function getTipo_usuario() {
+        return $this->tipo_usuario;
+    }
+
+    public function setTipo_usuario($tipo_usuario) {
+        $this->tipo_usuario = $tipo_usuario;
+    }
+
+    function getData_nascimento() {
+        return $this->data_nascimento;
+    }
+
+    function setDataNascimento($data_nascimento) {
         $this->data_nascimento = $data_nascimento;
-        }
-        
-        function getSexo() {
-		return $this->sexo;
-	}
-	
-	function setSexo($sexo) {
-		$this->sexo = $sexo;
-	}
-        
-        function getTelefone() {
-		return $this->telefone;
-	}
+    }
 
-	function setTelefone($telefone) {
-		$this->telefone = $telefone;
-	}
-        
-        function getNome_Responsavel() {
-		return $this->nome_responsavel;
-	}
+    function getSexo() {
+        return $this->sexo;
+    }
 
-	function setNome_Responsavel($nome_responsavel) {
-		$this->nome_responsavel = $nome_responsavel;
-	}
-        
-        function getAno_escolar() {
-		return $this->ano_escolar;
-	}
+    function setSexo($sexo) {
+        $this->sexo = $sexo;
+    }
 
-	function setAno_escolar($ano_escolar) {
-		$this->ano_escolar = $ano_escolar;
-	}
+    function getTelefone() {
+        return $this->telefone;
+    }
 
+    function setTelefone($telefone) {
+        $this->telefone = $telefone;
+    }
+
+    function getNome_Responsavel() {
+        return $this->nome_responsavel;
+    }
+
+    function setNome_Responsavel($nome_responsavel) {
+        $this->nome_responsavel = $nome_responsavel;
+    }
+
+    function getAno_escolar() {
+        return $this->ano_escolar;
+    }
+
+    function setAno_escolar($ano_escolar) {
+        $this->ano_escolar = $ano_escolar;
+    }
 
     public function verificarUsername($username) {
         $array = array('username' => $username);
         $query = $this->db->get_where(TABELA_USUARIO, $array);
         $resultado = $query->row();
-        if(empty($resultado)) {
+        if (empty($resultado)) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     public function getUsuarios() {
         $query = $this->db->get_where(TABELA_USUARIO);
         $resultado = $query->result_array();
         return $resultado;
     }
-	
+    
+    public function getListaUsuariosQuiz($idQuiz) {
+        $array = array('id_quiz' => $idQuiz);
+        $query = $this->db->get_where(TABELA_USUARIO, $array);
+        $resultado = $query->result_array();
+        return $resultado;
+    }
+
     public function getUsuario($id) {
         $array = array('id' => $id);
         $query = $this->db->get_where(TABELA_USUARIO, $array);
         $resultado = $query->row();
         return $resultado;
     }
-    
-    public function cadastrar($data){
-        if($this->db->insert(TABELA_USUARIO, $data)) {
+
+    public function cadastrar($data) {
+        if ($this->db->insert(TABELA_USUARIO, $data)) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     public function mudarSenha($data) {
         $array = array('username' => $data['username']);
         $this->db->where($array);
         $this->db->set($data);
         $this->db->update(TABELA_USUARIO);
-        
+
         return true;
     }
-    
+
     public function getUsuariosQuiz($idQuiz, $time, $index) {
-        if($index == 1) {
+        if ($index == 1) {
             $array = array('id_quiz' => $idQuiz, 'ano_escolar' => $time);
             $query = $this->db->get_where(TABELA_USUARIO, $array);
             $resultado = $query->result_array();
             return $resultado;
-        } else if($index == 2) {
+        } else if ($index == 2) {
             $array = array('id_quiz' => $idQuiz, 'ano_escolar' => $time);
             $query = $this->db->get_where(TABELA_USUARIO, $array);
             $resultado = $query->result_array();
             return $resultado;
         }
-        
     }
+
 }
-
-

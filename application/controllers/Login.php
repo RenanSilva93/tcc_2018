@@ -26,8 +26,7 @@ class Login extends CI_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('msg', 'Não foi possível realizar login.');
-            $this->load->view('welcome_message');
-            
+            $this->load->view('homeView');
         } else {
             $usuario = $this->modelLogin->buscarUsuario($post['username'], $post['senha']);
             if (!empty($usuario)) {
@@ -44,10 +43,11 @@ class Login extends CI_Controller {
                 redirect('atividade/index');
             } else {
                 $this->session->set_flashdata('msg', 'Usuário ou senha inválidos.');
-                $this->load->view('welcome_message');
+                $this->load->view('homeView');
             }
         }
     }
+
 }
 ?>
 

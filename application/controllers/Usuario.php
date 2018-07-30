@@ -106,32 +106,41 @@ class Usuario extends CI_Controller {
             $this->trocarSenha($mensagem);
         }
     }
-    
+
     public function cadastrarUsuarioToProfessor($mensagem = NULL) {
         if ($this->session->userdata('loginuser')) {
             $data['mensagem'] = $mensagem;
-            $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            if($this->session->userdata('tipo_usuario') == ADMINISTRADOR) {
+                $data['quizzes'] = $this->modelAtividade->getQuizzesAdm();
+            } else {
+                $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            }
             $data['funcao'] = 'usuario/cadastrarUsuarioToProfessorQuiz';
             $this->load->view('atividade/escolherQuizView', $data);
         } else {
-            $this->load->view('welcome_message');
+            $this->load->view('homeView');
         }
     }
-    
-    public function cadastrarUsuarioToProfessorQuiz($mensagem = NULL) {
+
+    public function cadastrarUsuarioToProfessorQuiz($mensagem = NULL, $idQuiz = NULL) {
         if ($this->session->userdata('loginuser')) {
             $post = $this->input->post();
             $this->load->library('form_validation');
             $this->form_validation->set_rules("quiz", "Quiz", "required");
-
-            $data['quiz'] = $this->modelAtividade->getQuiz($post['quiz']);
             
+            if($idQuiz) {
+                $data['quiz'] = $this->modelAtividade->getQuiz($idQuiz);
+            } else {
+                $data['quiz'] = $this->modelAtividade->getQuiz($post['quiz']);
+            }
+
+            $data['mensagem'] = $mensagem;
             $this->load->view('usuario/cadastrarUsuarioToProfessorView', $data);
         } else {
-            $this->load->view('welcome_message');
+            $this->load->view('homeView');
         }
     }
-    
+
     public function inserirUsuario($idQuiz, $id = null) {
         $post = $this->input->post();
         $this->load->library('form_validation');
@@ -142,74 +151,107 @@ class Usuario extends CI_Controller {
         $this->form_validation->set_rules("sexo", "Sexo", "required");
         $this->form_validation->set_rules("data_nascimento", "Data Nascimento", "required");
 
-        
-            $data['nome'] = $post['nome'];
-            //$data['senha'] = $post['senha'];
-            $data['username'] = $post['username'];
-            $data['email'] = $post['email'];
-            $data['data_nascimento'] = $post['data_nascimento'];
-            //$data['telefone'] = $post['telefone'];
-            $data['sexo'] = $post['sexo'];
-            $data['tipo_usuario'] = ESTUDANTE;
-            $data['nome_responsavel'] = $post['nome_responsavel'];
-            $data['ano_escolar'] = $post['time'];
 
-            if ($id) { //edicao
-                $data['id'] = $id;
-                if ($this->modelUsuario->atualizar($data)) {
-                    $this->data['mensagem'] = 'Usuário atualizado com sucesso!';
-                    $this->cadastrar();
-                } else {
-                    $this->data['mensagem'] = 'Não foi possível atualizar usuário!';
-                    //$this->editar($id);
-                }
-            } else { //insercao                   
-                if ($post['senha'] == $post['senha2']) {
-                    $data['senha'] = password_hash($post['senha'], PASSWORD_DEFAULT);
-                    
-                    if ($this->modelUsuario->verificarUsername($post['username'])) {
-                        if ($this->modelUsuario->cadastrar($data)) {
-                            $mensagem = 'Usuário cadastrado com sucesso!';
-                            $this->cadastrarUsuarioToProfessorQuiz($mensagem);
-                        } else {
-                            $mensagem = 'Não foi possível cadastrar usuário!';
-                            $this->cadastrarUsuarioToProfessorQuiz($mensagem);
-                        }
-                    } else {
-                        $mensagem = 'Não foi possível cadastrar usuário! Username já cadastrado.';
-                        $this->cadastrarUsuarioToProfessorQuiz($mensagem);
-                    }
-                    
-                } else {
-                    $mensagem = 'Senhas diferentes!';
-                    $this->cadastrarUsuarioToProfessorQuiz($mensagem);
-                }
+        $data['nome'] = $post['nome'];
+        //$data['senha'] = $post['senha'];
+        $data['username'] = $post['username'];
+        $data['email'] = $post['email'];
+        $data['data_nascimento'] = $post['data_nascimento'];
+        //$data['telefone'] = $post['telefone'];
+        $data['sexo'] = $post['sexo'];
+        $data['tipo_usuario'] = ESTUDANTE;
+        $data['nome_responsavel'] = $post['nome_responsavel'];
+        $data['ano_escolar'] = $post['time'];
+        $data['id_quiz'] = $idQuiz;
+
+        if ($id) { //edicao
+            $data['id'] = $id;
+            if ($this->modelUsuario->atualizar($data)) {
+                $this->data['mensagem'] = 'Usuário atualizado com sucesso!';
+                $this->cadastrar();
+            } else {
+                $this->data['mensagem'] = 'Não foi possível atualizar usuário!';
+                //$this->editar($id);
             }
-        
+        } else { //insercao                   
+            if ($post['senha'] == $post['senha2']) {
+                $data['senha'] = password_hash($post['senha'], PASSWORD_DEFAULT);
+
+                if ($this->modelUsuario->verificarUsername($post['username'])) {
+                    if ($this->modelUsuario->cadastrar($data)) {
+                        $mensagem = 'Usuário cadastrado com sucesso!';
+                        $this->cadastrarUsuarioToProfessorQuiz($mensagem, $idQuiz);
+                    } else {
+                        $mensagem = 'Não foi possível cadastrar usuário!';
+                        $this->cadastrarUsuarioToProfessorQuiz($mensagem, $idQuiz);
+                    }
+                } else {
+                    $mensagem = 'Não foi possível cadastrar usuário! Username já cadastrado.';
+                    $this->cadastrarUsuarioToProfessorQuiz($mensagem, $idQuiz);
+                }
+            } else {
+                $mensagem = 'Senhas diferentes!';
+                $this->cadastrarUsuarioToProfessorQuiz($mensagem, $idQuiz);
+            }
+        }
     }
-    
+
     public function verQuizComoAluno($mensagem = NULL) {
         if ($this->session->userdata('loginuser')) {
             $data['mensagem'] = $mensagem;
-            $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            if($this->session->userdata('tipo_usuario') == ADMINISTRADOR) {
+                $data['quizzes'] = $this->modelAtividade->getQuizzesAdm();
+            } else {
+                $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            }
             $data['funcao'] = 'usuario/verQuiz';
             $this->load->view('atividade/escolherQuizView', $data);
         } else {
-            $this->load->view('welcome_message');
+            $this->load->view('homeView');
         }
     }
-    
+
     public function verQuiz() {
         if ($this->session->userdata('loginuser')) {
             $post = $this->input->post();
             $this->load->library('form_validation');
             $this->form_validation->set_rules("quiz", "Quiz", "required");
 
-            $data['quiz'] = $this->modelAtividade->getQuiz($post['quiz']);          
+            $data['quiz'] = $this->modelAtividade->getQuiz($post['quiz']);
 
             $this->load->view('atividade/verQuizComoAlunoView', $data);
         } else {
-            $this->load->view('welcome_message');
+            $this->load->view('homeView');
+        }
+    }
+    
+    public function listaUsuario($mensagem = NULL) {
+        if ($this->session->userdata('loginuser')) {
+            $data['mensagem'] = $mensagem;
+            if ($this->session->userdata('tipo_usuario') == ADMINISTRADOR) {
+                $data['quizzes'] = $this->modelAtividade->getQuizzesAdm();
+            } else {
+                $data['quizzes'] = $this->modelAtividade->getQuizzes($this->session->userdata('id'));
+            }
+
+            $data['funcao'] = 'usuario/listaUsuarios';
+            $this->load->view('atividade/escolherQuizView', $data);
+        } else {
+            $this->load->view('homeView');
+        }
+    }
+    
+    public function listaUsuarios() {
+        if ($this->session->userdata('loginuser')) {
+            $post = $this->input->post();
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules("quiz", "Quiz", "required");
+
+            $data['usuarios'] = $this->modelUsuario->getListaUsuariosQuiz($post['quiz']);
+
+            $this->load->view('usuario/listaUsuarioView', $data);
+        } else {
+            $this->load->view('homeView');
         }
     }
 
