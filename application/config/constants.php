@@ -84,6 +84,7 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+<<<<<<< HEAD
 //Tabelas
 defined('TABELA_USUARIO')       OR define('TABELA_USUARIO', 'usuario');
 defined('TABELA_PERGUNTA')       OR define('TABELA_PERGUNTA', 'pergunta');
@@ -99,3 +100,6 @@ defined('ESTUDANTE')       OR define('ESTUDANTE', '3');
 //Total Aluno
 defined('TURMAB')       OR define('TURMAB', '31');
 defined('TURMAC')       OR define('TURMAC', '29');
+=======
+defined('TABELA_CONTATO')       OR define('TABELA_CONTATO', 'contato');
+>>>>>>> a6c0720e6f5217eed48e9ac3b99d2f8a9bcecb43
